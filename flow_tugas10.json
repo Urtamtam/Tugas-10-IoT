@@ -1,0 +1,202 @@
+[
+  {
+    "id": "flow_t10",
+    "type": "tab",
+    "label": "Tugas 10",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "broker_t10",
+    "type": "mqtt-broker",
+    "name": "Mosquitto Tugas 10",
+    "broker": "localhost",
+    "port": "1883",
+    "clientid": "node-red-tugas10",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true
+  },
+  {
+    "id": "ui_tab_t10",
+    "type": "ui_tab",
+    "name": "Kontrol IoT",
+    "icon": "dashboard",
+    "order": 10,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_group_t10",
+    "type": "ui_group",
+    "name": "Monitoring dan Kontrol",
+    "tab": "ui_tab_t10",
+    "order": 1,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "mqtt_in_suhu",
+    "type": "mqtt in",
+    "z": "flow_t10",
+    "name": "Suhu dari ESP32",
+    "topic": "iot/2410020014/sensor/suhu",
+    "qos": "0",
+    "datatype": "auto-detect",
+    "broker": "broker_t10",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 170,
+    "y": 100,
+    "wires": [
+      [
+        "gauge_suhu",
+        "dbg_suhu"
+      ]
+    ]
+  },
+  {
+    "id": "gauge_suhu",
+    "type": "ui_gauge",
+    "z": "flow_t10",
+    "name": "",
+    "group": "ui_group_t10",
+    "order": 1,
+    "width": 0,
+    "height": 0,
+    "gtype": "gage",
+    "title": "Suhu",
+    "label": "°C",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 50,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "30",
+    "seg2": "35",
+    "diff": false,
+    "className": "",
+    "x": 420,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "dbg_suhu",
+    "type": "debug",
+    "z": "flow_t10",
+    "name": "Log suhu",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 410,
+    "y": 130,
+    "wires": []
+  },
+  {
+    "id": "sw_relay",
+    "type": "ui_switch",
+    "z": "flow_t10",
+    "name": "",
+    "label": "Relay (GPIO 26)",
+    "tooltip": "",
+    "group": "ui_group_t10",
+    "order": 2,
+    "width": 0,
+    "height": 0,
+    "passthru": false,
+    "decouple": "false",
+    "topic": "iot/2410020014/aktuator/relay",
+    "topicType": "str",
+    "style": "",
+    "onvalue": "ON",
+    "onvalueType": "str",
+    "onicon": "",
+    "oncolor": "",
+    "offvalue": "OFF",
+    "offvalueType": "str",
+    "officon": "",
+    "offcolor": "",
+    "animate": false,
+    "className": "",
+    "x": 160,
+    "y": 220,
+    "wires": [
+      [
+        "mqtt_out_akt",
+        "dbg_cmd"
+      ]
+    ]
+  },
+  {
+    "id": "sl_pwm",
+    "type": "ui_slider",
+    "z": "flow_t10",
+    "name": "",
+    "label": "PWM LED (GPIO 2)",
+    "tooltip": "",
+    "group": "ui_group_t10",
+    "order": 3,
+    "width": 0,
+    "height": 0,
+    "passthru": false,
+    "outs": "end",
+    "topic": "iot/2410020014/aktuator/pwm",
+    "topicType": "str",
+    "min": 0,
+    "max": 255,
+    "step": 1,
+    "className": "",
+    "x": 170,
+    "y": 290,
+    "wires": [
+      [
+        "mqtt_out_akt",
+        "dbg_cmd"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_out_akt",
+    "type": "mqtt out",
+    "z": "flow_t10",
+    "name": "Kirim ke ESP32",
+    "topic": "",
+    "qos": "0",
+    "retain": "false",
+    "respTopic": "",
+    "contentType": "",
+    "userProps": "",
+    "correl": "",
+    "expiry": "",
+    "broker": "broker_t10",
+    "x": 440,
+    "y": 250,
+    "wires": []
+  },
+  {
+    "id": "dbg_cmd",
+    "type": "debug",
+    "z": "flow_t10",
+    "name": "Log perintah",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "x": 430,
+    "y": 310,
+    "wires": []
+  }
+]
